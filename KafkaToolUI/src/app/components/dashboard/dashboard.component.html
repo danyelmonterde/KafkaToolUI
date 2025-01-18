@@ -1,0 +1,33 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let data">{{ data?.name }}</td>
+  </ng-container>
+
+  <!-- Bootstrap Server Column -->
+  <ng-container matColumnDef="bootstrapServer">
+    <th mat-header-cell *matHeaderCellDef>Bootstrap Servers</th>
+    <td mat-cell *matCellDef="let data">{{ data?.bootstrapServer }}</td>
+  </ng-container>
+
+  <!-- SR URL Column -->
+  <ng-container matColumnDef="srUrl">
+    <th mat-header-cell *matHeaderCellDef>Schema Registry URL</th>
+    <td mat-cell *matCellDef="let data">{{ data?.srUrl }}</td>
+  </ng-container>
+
+  <!-- Header Row -->
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <!-- Data Rows -->
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
+<!-- Paginator -->
+<mat-paginator
+  [pageSize]="5"
+  [pageSizeOptions]="[5, 10, 20]"
+  showFirstLastButtons
+  aria-label="Pagination"
+>
+</mat-paginator>
