@@ -1,32 +1,66 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>Menu</mat-toolbar>
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
+    <mat-toolbar>Cluster Explorer</mat-toolbar>
     <mat-nav-list>
       @for(link of links; track link) {
-        <a mat-list-item href="{{ link.url }}">{{ link.label }}</a>
+      <a
+        mat-list-item
+        [routerLink]="link.url"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        {{ link.label }}
+      </a>
       }
-
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
       <!-- @if (isHandset$ | async) { -->
-        <button
-          type="button"
-          aria-label="Toggle sidenav"
-          mat-icon-button
-          (click)="drawer.toggle()">
-          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-        </button>
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+      >
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
       <!-- } -->
       <span>KafkaToolUI</span>
     </mat-toolbar>
 
-    <router-outlet />
+    <!-- Fixed Subheader -->
+    <div class="subheader mt-n">
+      <mat-toolbar style="height: 40px">
+        <!-- Render buttons dynamically based on current route -->
+        <ng-container *ngIf="buttonConfig[currentRoute]">
+          <ng-container *ngFor="let button of buttonConfig[currentRoute]">
+            <a
+              mat-button
+              [matTooltip]="button.tooltip"
+              [routerLink]="button.routerLink"
+              [disabled]="button.disabled"
+            >
+              <mat-icon>{{ button.icon }}</mat-icon>
+              {{ button.label }}
+            </a>
+          </ng-container>
+        </ng-container>
+      </mat-toolbar>
+    </div>
 
-    
+    <div class="cm">
+      <h2>
+        {{ pageTitle }}
+      </h2>
+      <router-outlet />
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

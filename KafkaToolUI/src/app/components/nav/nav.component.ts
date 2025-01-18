@@ -1,42 +1,95 @@
 import { Component, inject } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { MaterialModule } from '../../shared/material.module';
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.scss',
   standalone: true,
-  imports: [
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatListModule,
-    MatIconModule,
-    AsyncPipe,
-    CommonModule,
-    RouterModule
-  ]
+  imports: [AsyncPipe, CommonModule, RouterModule, MaterialModule],
 })
 export class NavComponent {
+  label!: string;
+  currentRoute: string;
+  pageTitle!: string;
 
-  links = [
-    { label: 'Dashboard', url: '' },
-  ];
+  links = [{ label: 'Kafka Clusters', url: '/dashboard' }];
+
+  buttonConfig: {
+    [key: string]: {
+      tooltip: string;
+      routerLink: string;
+      icon: string;
+      label: string;
+      disabled?: boolean;
+    }[];
+  } = {
+    '/dashboard': [
+      {
+        tooltip: 'Register new Kafka cluster connection',
+        routerLink: '/dashboard/new',
+        icon: 'settings',
+        label: 'Register New',
+        disabled: false,
+      },
+    ],
+    '/dashboard/new': [
+      {
+        tooltip: 'Save service configuration',
+        routerLink: '/dashboard/new',
+        icon: 'settings',
+        label: 'Register Connection',
+        disabled: true, // Example of a disabled button
+      },
+      {
+        tooltip: 'Verify service configuration',
+        routerLink: '/dashboard/new',
+        icon: 'check',
+        label: 'Verify',
+        disabled: true,
+      },
+      {
+        tooltip: 'Cancel service configuration',
+        routerLink: '/dashboard',
+        icon: 'cancel',
+        label: 'Cancel',
+        disabled: false,
+      },
+    ],
+  };
 
   private breakpointObserver = inject(BreakpointObserver);
+  private router = inject(Router); // Inject the Router service
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  isHandset$: Observable<boolean> = this.breakpointObserver
+    .observe(Breakpoints.Handset)
     .pipe(
-      map(result => result.matches),
+      map((result) => result.matches),
       shareReplay()
     );
+
+  constructor() {
+    this.currentRoute = this.router.url; // Get the current route at initialization
+  }
+
+  ngOnInit() {
+    // Optionally, subscribe to route changes
+    this.router.events.subscribe((event) => {
+      // Handle route change logic here
+      this.currentRoute = this.router.url;
+
+      console.log(this.currentRoute);
+
+      if (this.currentRoute === '/dashboard') {
+        this.pageTitle = 'Registered connections to Kafka clusters';
+      } else if (this.currentRoute === '/dashboard/new') {
+        this.pageTitle = 'Register new Kafka cluster connection';
+      }
+    });
+  }
 }

@@ -15,3 +15,16 @@
   top: 0;
   z-index: 1;
 }
+
+.subheader {
+  position: fixed;
+  top: 64px; /* This should match the height of the main mat-toolbar */
+  width: 100%;
+  z-index: 1; /* Ensures it's above the main content */
+}
+
+@media only screen and (max-width: 599px) {
+  .mt-n {
+    margin-top: -8px;
+  }
+}
