@@ -1,1 +1,45 @@
-<p>register-kafka-connection works!</p>
+<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+  <mat-tab label="Basic configuration">
+    <app-input [formGroup]="basicConfigForm" [inputs]="formOne"></app-input>
+
+    <div class="mt-acc">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> Security </mat-panel-title>
+            <mat-panel-description>
+              Configure authentication
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <!-- content -->
+          <app-input
+            [formGroup]="basicConfigForm"
+            [inputs]="formTwo"
+          ></app-input>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+
+    <div class="mt-acc">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> Schema Registry </mat-panel-title>
+            <mat-panel-description>
+              Storing and retrieving Apache Avro® schemas
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <!-- content -->
+          <app-input
+            [formGroup]="basicConfigForm"
+            [inputs]="formThree"
+          ></app-input>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Advanced options">Content 2</mat-tab>
+</mat-tab-group>
