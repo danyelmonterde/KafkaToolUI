@@ -31,6 +31,11 @@ html {
   --mdc-filled-text-field-focus-label-text-color: #f4a261 !important;
   --mdc-outlined-text-field-focus-outline-color: #f4a261 !important;
   --mdc-outlined-text-field-caret-color: #f4a261 !important;
+  --mat-tab-header-divider-height: 1px !important;
+}
+
+.mat-mdc-form-field.mat-focused .mat-mdc-select-arrow {
+  color: #f4a261 !important;
 }
 
 // Tags Style End
