@@ -4,7 +4,7 @@
     <mat-label>{{ input?.label }}</mat-label>
 
     <!-- Input Field -->
-    @if (input.fieldType === 'input') {
+    @if (input.type !== 'select' && input.type !== 'slide-toggle') {
     <ng-container>
       <input
         matInput
@@ -13,7 +13,7 @@
         [placeholder]="input?.placeholder"
       />
     </ng-container>
-    } @else if (input.fieldType === 'select') {
+    } @else if (input.type === 'select') {
     <!-- Select Field -->
     <ng-container>
       <mat-select
@@ -25,7 +25,7 @@
         </mat-option>
       </mat-select>
     </ng-container>
-    } @else if (input.fieldType === 'slide-toggle') {
+    } @else if (input.type === 'slide-toggle') {
     <!-- Mat Slide Toggle -->
     <ng-container>
       <mat-slide-toggle
