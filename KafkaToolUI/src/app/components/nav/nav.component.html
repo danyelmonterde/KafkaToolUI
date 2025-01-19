@@ -9,16 +9,16 @@
   >
     <mat-toolbar>Cluster Explorer</mat-toolbar>
     <mat-nav-list>
-      @for(link of links; track link) {
-      <a
-        mat-list-item
-        [routerLink]="link.url"
-        routerLinkActive="active-link"
-        [routerLinkActiveOptions]="{ exact: true }"
-      >
-        {{ link.label }}
-      </a>
-      }
+      <div *ngFor="let link of links">
+        <a
+          mat-list-item
+          [routerLink]="link.url"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          {{ link.label }}
+        </a>
+      </div>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -38,7 +38,7 @@
 
     <!-- Fixed Subheader -->
     <div class="subheader mt-n">
-      <mat-toolbar style="height: 40px">
+      <mat-toolbar class="tb-h">
         <!-- Render buttons dynamically based on current route -->
         <ng-container *ngIf="buttonConfig[currentRoute]">
           <ng-container *ngFor="let button of buttonConfig[currentRoute]">

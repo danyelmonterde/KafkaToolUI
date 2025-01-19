@@ -83,8 +83,6 @@ export class NavComponent {
       // Handle route change logic here
       this.currentRoute = this.router.url;
 
-      console.log(this.currentRoute);
-
       if (this.currentRoute === '/dashboard') {
         this.pageTitle = 'Registered connections to Kafka clusters';
       } else if (this.currentRoute === '/dashboard/new') {
