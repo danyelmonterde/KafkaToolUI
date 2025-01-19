@@ -79,12 +79,14 @@ export class RegisterKafkaConnectionComponent {
     {
       label: 'SASL User Name',
       controlName: 'saslUsername',
+      fieldType: 'input',
       type: 'text',
       placeholder: '',
       hint: 'SASL username for use with the PLAIN and SASL-SCRAM- mechanisms', // Added hint
     },
     {
       label: 'SASL Password',
+      fieldType: 'input',
       controlName: 'saslPassword',
       type: 'password',
       placeholder: '',
@@ -99,6 +101,7 @@ export class RegisterKafkaConnectionComponent {
     },
     {
       label: 'SSL Key Password',
+      fieldType: 'input',
       controlName: 'sslKeyPassword',
       type: 'password',
       placeholder: '',
@@ -106,6 +109,7 @@ export class RegisterKafkaConnectionComponent {
     },
     {
       label: "Path to client's public key file",
+      fieldType: 'input',
       controlName: 'pathToClientPubkf',
       type: 'text',
       placeholder: '',
@@ -113,6 +117,7 @@ export class RegisterKafkaConnectionComponent {
     },
     {
       label: 'Path to root CA certificates file',
+      fieldType: 'input',
       controlName: 'pathToRootCACertFile',
       type: 'text',
       placeholder: '',
@@ -123,6 +128,7 @@ export class RegisterKafkaConnectionComponent {
   formThree: any[] = [
     {
       label: 'Schema Registry URL',
+      fieldType: 'input',
       controlName: 'schemaRegistryUrl',
       type: 'text',
       placeholder: '',
@@ -130,6 +136,7 @@ export class RegisterKafkaConnectionComponent {
     },
     {
       label: 'Basic Auth User Info',
+      fieldType: 'input',
       controlName: 'basicAuthUserInfo',
       type: 'text',
       placeholder: '',
@@ -137,6 +144,7 @@ export class RegisterKafkaConnectionComponent {
     },
     {
       label: 'Auto-register schemas',
+      fieldType: 'slide-toggle',
       controlName: 'schemaRegistryUrl',
       type: 'text',
       placeholder: '',
