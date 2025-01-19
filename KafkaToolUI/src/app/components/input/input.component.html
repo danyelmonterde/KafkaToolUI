@@ -1,0 +1,52 @@
+<form [formGroup]="formGroup" class="mt-3">
+  @for (input of inputs; track input) {
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>{{ input?.label }}</mat-label>
+
+    <!-- Input Field -->
+    @if (input.fieldType === 'input') {
+    <ng-container>
+      <input
+        matInput
+        [formControlName]="input.controlName"
+        [type]="input.type || 'text'"
+        [placeholder]="input?.placeholder"
+      />
+    </ng-container>
+    } @else if (input.fieldType === 'select') {
+    <!-- Select Field -->
+    <ng-container>
+      <mat-select
+        [formControlName]="input.controlName"
+        [placeholder]="input.placeholder"
+      >
+        <mat-option *ngFor="let option of input.options" [value]="option.value">
+          {{ option.label }}
+        </mat-option>
+      </mat-select>
+    </ng-container>
+    } @else if (input.fieldType === 'slide-toggle') {
+    <!-- Mat Slide Toggle -->
+    <ng-container>
+      <mat-slide-toggle
+        [formControlName]="input.controlName"
+        [labelPosition]="input.labelPosition || 'before'"
+        [color]="input.color || 'primary'"
+      >
+        {{ input.label }}
+      </mat-slide-toggle>
+    </ng-container>
+    }
+
+    <mat-error *ngIf="formGroup.get(input.controlName)?.invalid">
+      {{ input.errorMessage }}
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Mat Hint -->
+  <p class="fHint">
+    {{ input.hint }}
+  </p>
+
+  }
+</form>
