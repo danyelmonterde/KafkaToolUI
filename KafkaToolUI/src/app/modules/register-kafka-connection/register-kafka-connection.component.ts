@@ -21,11 +21,12 @@ import { InputComponent } from '../../components/input/input.component';
     InputComponent,
   ],
   templateUrl: './register-kafka-connection.component.html',
-  styleUrl: './register-kafka-connection.component.scss',
+  styleUrls: ['./register-kafka-connection.component.scss'], // Fixed typo (was "styleUrl")
 })
 export class RegisterKafkaConnectionComponent {
   basicConfigForm!: FormGroup;
 
+  // Form Definitions
   formOne: any[] = [
     {
       label: 'Cluster Name',
@@ -53,18 +54,18 @@ export class RegisterKafkaConnectionComponent {
       type: 'select',
       placeholder: '',
       options: [
-        { label: 'Plaint Text', value: 'PT' },
-        { label: 'Ssl', value: 'SSL' },
-        { label: 'Sasl Plain Text', value: 'SASL PT' },
-        { label: 'Sasl Ssl', value: 'SASL SSL' },
+        { label: 'Plain Text', value: 'PT' },
+        { label: 'SSL', value: 'SSL' },
+        { label: 'SASL Plain Text', value: 'SASL PT' },
+        { label: 'SASL SSL', value: 'SASL SSL' },
       ],
-      selected: 'PT', // Default selected value
-      hint: 'Protocol used to communicate with brokers', // Added hint
+      selected: 'PT',
+      hint: 'Protocol used to communicate with brokers',
     },
     {
       label: 'SASL Mechanism',
-      controlName: 'saslMech',
       fieldType: 'select',
+      controlName: 'saslMech',
       type: 'select',
       placeholder: '',
       options: [
@@ -74,15 +75,15 @@ export class RegisterKafkaConnectionComponent {
         { label: 'SCRAM-SHA-256', value: 'SCRAM-SHA-256' },
         { label: 'SCRAM-SHA-512', value: 'SCRAM-SHA-512' },
       ],
-      hint: 'SASL mechanism to use for authentication', // Added hint
+      hint: 'SASL mechanism to use for authentication',
     },
     {
       label: 'SASL User Name',
-      controlName: 'saslUsername',
       fieldType: 'input',
+      controlName: 'saslUsername',
       type: 'text',
       placeholder: '',
-      hint: 'SASL username for use with the PLAIN and SASL-SCRAM- mechanisms', // Added hint
+      hint: 'SASL username for use with the PLAIN and SASL-SCRAM mechanisms',
     },
     {
       label: 'SASL Password',
@@ -90,14 +91,15 @@ export class RegisterKafkaConnectionComponent {
       controlName: 'saslPassword',
       type: 'password',
       placeholder: '',
-      hint: 'SASL password for use with the PLAIN and SASL-SCRAM- mechanism', // Added hint
+      hint: 'SASL password for use with the PLAIN and SASL-SCRAM mechanism',
     },
     {
       label: "Path to client's private key file",
+      fieldType: 'input',
       controlName: 'pathToClientPrivkf',
       type: 'text',
       placeholder: '',
-      hint: "Path to client's private key (PEM) used for authentication", // Added hint
+      hint: "Path to client's private key (PEM) used for authentication",
     },
     {
       label: 'SSL Key Password',
@@ -105,7 +107,7 @@ export class RegisterKafkaConnectionComponent {
       controlName: 'sslKeyPassword',
       type: 'password',
       placeholder: '',
-      hint: "Password for client's certificate", // Added hint
+      hint: "Password for client's certificate",
     },
     {
       label: "Path to client's public key file",
@@ -113,7 +115,7 @@ export class RegisterKafkaConnectionComponent {
       controlName: 'pathToClientPubkf',
       type: 'text',
       placeholder: '',
-      hint: "Path to client's public key (PEM) used for authentication", // Added hint
+      hint: "Path to client's public key (PEM) used for authentication",
     },
     {
       label: 'Path to root CA certificates file',
@@ -121,7 +123,7 @@ export class RegisterKafkaConnectionComponent {
       controlName: 'pathToRootCACertFile',
       type: 'text',
       placeholder: '',
-      hint: "Path to CA certificate file for verifying the broker's certificate", // Added hint
+      hint: "Path to CA certificate file for verifying the broker's certificate",
     },
   ];
 
@@ -132,7 +134,7 @@ export class RegisterKafkaConnectionComponent {
       controlName: 'schemaRegistryUrl',
       type: 'text',
       placeholder: '',
-      hint: 'Schema Registry URL', // Added hint
+      hint: 'Schema Registry URL',
     },
     {
       label: 'Basic Auth User Info',
@@ -140,31 +142,127 @@ export class RegisterKafkaConnectionComponent {
       controlName: 'basicAuthUserInfo',
       type: 'text',
       placeholder: '',
-      hint: 'Schema Registry Basic Auth User Info', // Added hint
+      hint: 'Schema Registry Basic Auth User Info',
     },
     {
       label: 'Auto-register schemas',
       fieldType: 'slide-toggle',
-      controlName: 'schemaRegistryUrl',
-      type: 'text',
-      placeholder: '',
-      hint: 'Automatically register new schemas when producing messages', // Added hint
+      controlName: 'autoRegisterSchemas',
+      type: 'slide-toggle',
+      hint: 'Automatically register new schemas when producing messages',
     },
   ];
+
+  formFour: any[] = [
+    {
+      label: 'Consumer Group Id Prefix',
+      fieldType: 'input',
+      controlName: 'cgIdPrefix',
+      type: 'text',
+      placeholder: '',
+      hint: 'Consumer Group Id is concatenation of the prefix and random Id',
+    },
+    {
+      label: 'APIVersion Request',
+      fieldType: 'slide-toggle',
+      controlName: 'apiVerRequest',
+      type: 'slide-toggle',
+      placeholder: '',
+      hint: "Request broker's supported API versions",
+    },
+    {
+      label: 'APIVersion Fallback ms',
+      fieldType: 'input',
+      controlName: 'apiVerFallbackMs',
+      type: 'text',
+      hint: 'Dictates how long broker version fallback is used',
+    },
+    {
+      label: 'Broker Version Fallback',
+      fieldType: 'input',
+      controlName: 'brokerVerFallback',
+      type: 'text',
+      hint: 'If ApiVersionRequest fails, the fallback version will be used',
+    },
+    {
+      label: 'Reconnect Backoff Max ms',
+      fieldType: 'input',
+      controlName: 'reconnectBackoffMaxMs',
+      type: 'text',
+      hint: 'Maximum time to wait before reconnecting to a broker',
+    },
+    {
+      label: 'Message Max Bytes',
+      fieldType: 'input',
+      controlName: 'msgMaxBytes',
+      type: 'text',
+      hint: 'Maximum Kafka protocol request message size',
+    },
+    {
+      label: 'Receive Message Max Bytes',
+      fieldType: 'input',
+      controlName: 'receiveMsgMaxBytes',
+      type: 'text',
+      hint: 'Maximum Kafka protocol request message size',
+    },
+    {
+      label: 'Fetch Error Backoff ms',
+      fieldType: 'input',
+      controlName: 'fetchErrBackoffMs',
+      type: 'text',
+      hint: 'How long to postpone the next fetch request',
+    },
+    {
+      label: 'Fetch Max bytes',
+      fieldType: 'input',
+      controlName: 'fetchMaxBytes',
+      type: 'text',
+      hint: 'Maximum amount of data the broker shall return for a Fetch request',
+    },
+    {
+      label: 'Max Partition Fetch Bytes',
+      fieldType: 'input',
+      controlName: 'maxPartitionFetchBytes',
+      type: 'text',
+      hint: 'Initial maximum number of bytes per topic+partition to request',
+    },
+    {
+      label: 'Queued Max Messages Kbytes',
+      fieldType: 'input',
+      controlName: 'queuedMaxMsgKbytes',
+      type: 'text',
+      hint: 'Maximum number of kilobytes per topic+partition in local consumer queue',
+    },
+    {
+      label: 'Queued Min Messages',
+      fieldType: 'input',
+      controlName: 'queuedMinMsgs',
+      type: 'text',
+      hint: 'Minimum number of messages per topic+partition in local consumer queue',
+    },
+    {
+      label: 'Check Crcs',
+      fieldType: 'slide-toggle',
+      controlName: 'checkCrcs',
+      type: 'slide-toggle',
+      hint: 'Verify CRC32 of consumed messages',
+    },
+  ];
+
   readonly panelOpenState = signal(false);
 
   get f() {
     return this.basicConfigForm.controls;
   }
 
-  constructor(private _fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
     this.buildForm();
   }
 
   buildForm() {
-    this.basicConfigForm = this._fb.group({
+    this.basicConfigForm = this.fb.group({
       clusterName: ['', Validators.required],
       bootstrapServers: ['', Validators.required],
       secProtocol: ['PT'],
@@ -177,7 +275,20 @@ export class RegisterKafkaConnectionComponent {
       pathToRootCACertFile: [''],
       schemaRegistryUrl: [''],
       basicAuthUserInfo: [''],
-      autoRegisterSchemas: [''],
+      autoRegisterSchemas: [false],
+      cgIdPrefix: ['KMagic-'],
+      apiVerRequest: [true],
+      apiVerFallbackMs: ['0'],
+      brokerVerFallback: ['0.10.0'],
+      reconnectBackoffMaxMs: ['10000'],
+      msgMaxBytes: ['1000000'],
+      receiveMsgMaxBytes: ['100000000'],
+      fetchErrBackoffMs: ['500'],
+      fetchMaxBytes: ['52428800'],
+      maxPartitionFetchBytes: ['1048576'],
+      queuedMaxMsgKbytes: ['1048576'],
+      queuedMinMsgs: ['100000'],
+      checkCrcs: [false],
     });
   }
 
