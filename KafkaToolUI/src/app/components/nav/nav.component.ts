@@ -5,6 +5,9 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Router, RouterModule } from '@angular/router';
 import { MaterialModule } from '../../shared/material.module';
+import { FormGroup } from '@angular/forms';
+import { FormDataService } from '../../core/services/form-data.service';
+import { log } from 'console';
 
 @Component({
   selector: 'app-nav',
@@ -17,6 +20,9 @@ export class NavComponent {
   label!: string;
   currentRoute: string;
   pageTitle!: string;
+
+  formGroup!: FormGroup;
+  isFormValid: boolean = false;
 
   links = [{ label: 'Kafka Clusters', url: '/dashboard' }];
 
@@ -44,14 +50,14 @@ export class NavComponent {
         routerLink: '/dashboard/new',
         icon: 'settings',
         label: 'Register Connection',
-        disabled: true, // Example of a disabled button
+        disabled: !this.isFormValid, // Disable dynamically
       },
       {
         tooltip: 'Verify service configuration',
         routerLink: '/dashboard/new',
         icon: 'check',
         label: 'Verify',
-        disabled: true,
+        disabled: !this.isFormValid, // Disable dynamically
       },
       {
         tooltip: 'Cancel service configuration',
@@ -62,7 +68,6 @@ export class NavComponent {
       },
     ],
   };
-
   private breakpointObserver = inject(BreakpointObserver);
   private router = inject(Router); // Inject the Router service
 
@@ -73,11 +78,87 @@ export class NavComponent {
       shareReplay()
     );
 
-  constructor() {
+  constructor(private formDataService: FormDataService) {
     this.currentRoute = this.router.url; // Get the current route at initialization
   }
 
   ngOnInit() {
+    this.updatePageTitle();
+    this.checkFormValue();
+  }
+
+  onButtonClick(label: string) {
+    switch (label) {
+      case 'Verify':
+        this.verifyConnection();
+        break;
+      case 'Register Connection':
+        this.registerConnection();
+        break;
+      default:
+        console.log('Button action not defined for:', label);
+    }
+  }
+
+  verifyConnection() {
+    // this.triggerValidation();
+    if (this.isFormValid) {
+      console.log('Verifying connection...');
+
+      // Add verification logic here
+    } else {
+      console.warn('Cannot verify. Form is invalid.');
+
+      alert('Error! Invalid data in Basic configuration.');
+    }
+  }
+
+  registerConnection() {
+    // this.triggerValidation();
+    if (this.isFormValid) {
+      console.log('Registering connection...');
+      // Add registration logic here
+    } else {
+      console.warn('Cannot register. Form is invalid.');
+    }
+  }
+
+  checkFormValue() {
+    this.formDataService.getFormGroup$('basicConfigForm').subscribe((form) => {
+      if (form) {
+        this.formGroup = form;
+        this.isFormValid = form.valid;
+
+        // Listen for form changes
+        this.formGroup.statusChanges.subscribe((status) => {
+          this.isFormValid = status === 'VALID';
+
+          // Dynamically update the buttonConfig
+          const buttons = this.buttonConfig['/dashboard/new'];
+          const { clusterName, bootstrapServers } = this.formGroup.value;
+
+          buttons.forEach((button) => {
+            if (button.label === 'Verify') {
+              // Enable "Verify" button if bootstrapServers has a value
+              button.disabled = !bootstrapServers;
+            } else if (button.label === 'Register Connection') {
+              // Enable "Register Connection" if both clusterName and bootstrapServers have values
+              button.disabled = !(clusterName && bootstrapServers);
+            }
+          });
+        });
+      }
+    });
+  }
+
+  // triggerValidation() {
+  //   if (this.formGroup) {
+  //     this.formGroup.markAllAsTouched(); // Highlight invalid fields
+  //     this.isFormValid = this.formGroup.valid;
+  //   }
+  // }
+
+  updatePageTitle() {
     // Optionally, subscribe to route changes
     this.router.events.subscribe((event) => {
       // Handle route change logic here
