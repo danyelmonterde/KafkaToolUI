@@ -15,6 +15,7 @@ import {
   formThree,
   formFour,
 } from '../../forms/form-definitions';
+import { FormDataService } from '../../core/services/form-data.service';
 
 @Component({
   selector: 'app-register-kafka-connection',
@@ -43,10 +44,15 @@ export class RegisterKafkaConnectionComponent {
     return this.basicConfigForm.controls;
   }
 
-  constructor(private fb: FormBuilder) {}
-
+  constructor(
+    private fb: FormBuilder,
+    private formDataService: FormDataService
+  ) {}
   ngOnInit() {
     this.buildForm();
+
+    // Share the form group with the service
+    this.formDataService.setFormGroup('basicConfigForm', this.basicConfigForm);
   }
 
   buildForm() {
@@ -78,11 +84,5 @@ export class RegisterKafkaConnectionComponent {
       queuedMinMsgs: ['100000'],
       checkCrcs: [false],
     });
-  }
-
-  onSubmit() {
-    if (this.basicConfigForm.valid) {
-      console.log(this.basicConfigForm.value);
-    }
   }
 }
