@@ -7,7 +7,7 @@ import { Router, RouterModule } from '@angular/router';
 import { MaterialModule } from '../../shared/material.module';
 import { FormGroup } from '@angular/forms';
 import { FormDataService } from '../../core/services/form-data.service';
-import { log } from 'console';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-nav',
@@ -24,7 +24,11 @@ export class NavComponent {
   formGroup!: FormGroup;
   isFormValid: boolean = false;
 
-  links = [{ label: 'Kafka Clusters', url: '/dashboard' }];
+  path = localStorage.getItem('path');
+
+  links = [{ label: 'Kafka Clusters', url: '/cluster' }];
+
+  private _snackBar = inject(MatSnackBar);
 
   buttonConfig: {
     [key: string]: {
@@ -35,33 +39,33 @@ export class NavComponent {
       disabled?: boolean;
     }[];
   } = {
-    '/dashboard': [
+    '/cluster': [
       {
         tooltip: 'Register new Kafka cluster connection',
-        routerLink: '/dashboard/new',
+        routerLink: '/cluster/new',
         icon: 'settings',
         label: 'Register New',
         disabled: false,
       },
     ],
-    '/dashboard/new': [
+    '/cluster/new': [
       {
         tooltip: 'Save service configuration',
-        routerLink: '/dashboard/new',
+        routerLink: '/cluster/new',
         icon: 'settings',
         label: 'Register Connection',
         disabled: !this.isFormValid, // Disable dynamically
       },
       {
         tooltip: 'Verify service configuration',
-        routerLink: '/dashboard/new',
+        routerLink: '/cluster/new',
         icon: 'check',
         label: 'Verify',
         disabled: !this.isFormValid, // Disable dynamically
       },
       {
         tooltip: 'Cancel service configuration',
-        routerLink: '/dashboard',
+        routerLink: '/cluster',
         icon: 'cancel',
         label: 'Cancel',
         disabled: false,
@@ -102,14 +106,39 @@ export class NavComponent {
 
   verifyConnection() {
     // this.triggerValidation();
-    if (this.isFormValid) {
-      console.log('Verifying connection...');
 
+    if (this.isFormValid) {
+      this.formDataService.getFormGroup$('basicConfigForm').subscribe({
+        next: (form: any) => {
+          console.log(form.value);
+
+          if (
+            form.value.schemaRegistryUrl !== '' &&
+            form.value.basicAuthUserInfo !== ''
+          ) {
+            this._snackBar.open(
+              'Successfully connected to the cluster. Validated connection to Schema Registry.',
+              'Close',
+              {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+                panelClass: 'mt-3',
+              }
+            );
+          }
+        },
+      });
       // Add verification logic here
     } else {
-      console.warn('Cannot verify. Form is invalid.');
-
-      alert('Error! Invalid data in Basic configuration.');
+      this._snackBar.open(
+        'Error! Invalid data in Basic configuration.',
+        'Close',
+        {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: 'error-alert',
+        }
+      );
     }
   }
 
@@ -134,7 +163,7 @@ export class NavComponent {
           this.isFormValid = status === 'VALID';
 
           // Dynamically update the buttonConfig
-          const buttons = this.buttonConfig['/dashboard/new'];
+          const buttons = this.buttonConfig['/cluster/new'];
           const { clusterName, bootstrapServers } = this.formGroup.value;
 
           buttons.forEach((button) => {
@@ -164,9 +193,9 @@ export class NavComponent {
       // Handle route change logic here
       this.currentRoute = this.router.url;
 
-      if (this.currentRoute === '/dashboard') {
+      if (this.currentRoute === '/cluster') {
         this.pageTitle = 'Registered connections to Kafka clusters';
-      } else if (this.currentRoute === '/dashboard/new') {
+      } else if (this.currentRoute === '/cluster/new') {
         this.pageTitle = 'Register new Kafka cluster connection';
       }
     });
