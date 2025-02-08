@@ -33,6 +33,7 @@ html {
   --mdc-outlined-text-field-focus-outline-color: #f4a261 !important;
   --mdc-outlined-text-field-caret-color: #f4a261 !important;
   --mat-tab-header-divider-height: 1px !important;
+  --mdc-text-button-label-text-size: 12.5px;
 }
 
 .mat-mdc-form-field.mat-focused .mat-mdc-select-arrow {
@@ -143,7 +144,7 @@ html {
 
 .subheader {
   position: sticky;
-  top: 64px; /* This should match the height of the main mat-toolbar */
+  top: 65px; /* This should match the height of the main mat-toolbar */
   width: 100%;
   z-index: 100; /* Ensures it's above the main content */
 }
@@ -151,6 +152,11 @@ html {
 @media only screen and (max-width: 599px) {
   .mt-n {
     margin-top: -8px;
+  }
+
+  .subheader {
+    top: 57px; /* This should match the height of the main mat-toolbar */
+    overflow: scroll hidden;
   }
 }
 
@@ -161,11 +167,13 @@ a.active-link {
 }
 
 .cm {
-  margin: 3rem 1rem 0;
+  margin: 2rem 1rem 0;
 }
 
 .tb-h {
-  height: 45px !important;
+  flex-wrap: wrap;
+  height: auto !important;
+  min-height: 45px;
   z-index: 100 !important;
 }
 
