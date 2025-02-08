@@ -9,16 +9,30 @@
   >
     <mat-toolbar>{{ title }}</mat-toolbar>
     <mat-nav-list>
-      <div *ngFor="let link of links">
-        <a
-          mat-list-item
-          [routerLink]="link.url"
-          routerLinkActive="active-link"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
+      @for (link of links; track link) {
+      <ng-container>
+        <a mat-list-item [routerLink]="link.url" routerLinkActive="active-link">
           {{ link.label }}
         </a>
-      </div>
+
+        <!-- ✅ Use ?. to prevent errors if 'children' is undefined -->
+        @if (link.children?.length) {
+        <ng-container>
+          <div class="sub-links">
+            @for(subLink of link.children; track subLink) {
+            <a
+              mat-list-item
+              [routerLink]="subLink.url"
+              routerLinkActive="active-link"
+            >
+              {{ subLink.label }}
+            </a>
+            }
+          </div>
+        </ng-container>
+        }
+      </ng-container>
+      }
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

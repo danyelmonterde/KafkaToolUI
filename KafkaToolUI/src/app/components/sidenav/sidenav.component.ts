@@ -15,9 +15,14 @@ export class SidenavComponent {
   @ViewChild('drawer') drawer!: MatSidenav;
 
   @Input() title: string = 'Cluster Explorer'; // Default title
-  @Input() links: { label: string; url: string }[] = [];
+  // @Input() links: { label: string; url: string }[] = [];
   @Input() isHandset$!: any;
   @Input() mode: 'side' | 'over' = 'side';
+  @Input() links: {
+    label: string;
+    url: string;
+    children?: { label: string; url: string }[]; // ✅ Add children property
+  }[] = [];
 
   toggleDrawer() {
     this.drawer.toggle();
