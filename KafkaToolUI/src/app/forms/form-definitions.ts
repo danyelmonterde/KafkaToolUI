@@ -112,7 +112,7 @@ export const formThree: any[] = [
     label: 'Basic Auth User Info',
     fieldType: 'input',
     controlName: 'basicAuthUserInfo',
-    type: 'text',
+    type: 'password',
     placeholder: '',
     hint: 'Schema Registry Basic Auth User Info',
   },
