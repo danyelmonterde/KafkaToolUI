@@ -1,0 +1,28 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="isHandset$ ? 'dialog' : 'navigation'"
+    [mode]="mode"
+    [opened]="!isHandset$"
+  >
+    <mat-toolbar>{{ title }}</mat-toolbar>
+    <mat-nav-list>
+      <div *ngFor="let link of links">
+        <a
+          mat-list-item
+          [routerLink]="link.url"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          {{ link.label }}
+        </a>
+      </div>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <ng-content></ng-content>
+    <!-- Allows injecting other content dynamically -->
+  </mat-sidenav-content>
+</mat-sidenav-container>
