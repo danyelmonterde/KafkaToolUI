@@ -1,4 +1,5 @@
 <app-sidenav
+  #drawer
   [title]="'KafkaToolUI'"
   [links]="links"
   [isHandset$]="isHandset$ | async"
@@ -27,8 +28,12 @@
             [routerLink]="button.routerLink"
             [disabled]="button.disabled"
             (click)="onButtonClick(button.label)"
+            [style.color]="!button.disabled ? button.color : ''"
           >
+            @if (button?.icon) {
             <mat-icon>{{ button.icon }}</mat-icon>
+
+            }
             {{ button.label }}
           </a>
         </ng-container>
