@@ -170,7 +170,7 @@ a.active-link {
 }
 
 .mt-3 {
-  margin-top: 1rem;
+  margin-top: 1rem !important;
 }
 
 .w-100 {
@@ -191,5 +191,29 @@ a.active-link {
 .mt-acc {
   margin-top: 2rem;
   margin-bottom: 1rem;
+}
+
+.error-alert {
+  margin-top: 7rem !important;
+
+  --mdc-snackbar-container-color: #ff0000;
+  --mdc-snackbar-supporting-text-color: #fff;
+  --mat-snack-bar-button-color: #fff;
+
+  .mdc-snackbar__surface {
+    padding: 0.5rem 0.5rem !important;
+  }
+}
+
+.success-alert {
+  margin-top: 7rem !important;
+
+  --mdc-snackbar-container-color: rgb(4, 194, 4);
+  --mdc-snackbar-supporting-text-color: #fff;
+  --mat-snack-bar-button-color: #fff;
+
+  .mdc-snackbar__surface {
+    padding: 0.5rem 0.5rem !important;
+  }
 }
 // Custom Classes End
