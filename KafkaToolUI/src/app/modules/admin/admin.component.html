@@ -1,1 +1,43 @@
-<p>admin works!</p>
+<app-sidenav
+  [title]="'KafkaToolUI'"
+  [links]="links"
+  [isHandset$]="isHandset$ | async"
+  [mode]="(isHandset$ | async) ? 'over' : 'side'"
+>
+  <mat-toolbar color="primary">
+    <button
+      type="button"
+      aria-label="Toggle sidenav"
+      mat-icon-button
+      (click)="toggleDrawer()"
+    >
+      <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+    </button>
+    <span>KafkaToolUI</span>
+  </mat-toolbar>
+
+  <!-- Fixed Subheader -->
+  <div class="subheader mt-n">
+    <mat-toolbar class="tb-h">
+      <ng-container *ngIf="buttonConfig[currentRoute]">
+        <ng-container *ngFor="let button of buttonConfig[currentRoute]">
+          <a
+            mat-button
+            [matTooltip]="button.tooltip"
+            [routerLink]="button.routerLink"
+            [disabled]="button.disabled"
+            (click)="onButtonClick(button.label)"
+          >
+            <mat-icon>{{ button.icon }}</mat-icon>
+            {{ button.label }}
+          </a>
+        </ng-container>
+      </ng-container>
+    </mat-toolbar>
+  </div>
+
+  <div class="cm">
+    <h2>{{ pageTitle }}</h2>
+    <router-outlet></router-outlet>
+  </div>
+</app-sidenav>
