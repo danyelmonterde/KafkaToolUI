@@ -1,9 +1,17 @@
 import { Routes } from '@angular/router';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { RegisterKafkaConnectionComponent } from './modules/register-kafka-connection/register-kafka-connection.component';
+import { AdminComponent } from './modules/admin/admin.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'dashboard/new', component: RegisterKafkaConnectionComponent },
+  { path: '', redirectTo: '/admin', pathMatch: 'full' },
+  {
+    path: 'admin',
+    component: AdminComponent, // Load AdminComponent directly
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./modules/admin/admin.module').then((m) => m.AdminModule),
+      },
+    ],
+  },
 ];
