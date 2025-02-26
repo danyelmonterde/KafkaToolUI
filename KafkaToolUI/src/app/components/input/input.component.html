@@ -1,19 +1,21 @@
 <form [formGroup]="formGroup" class="mt-3">
-  @for (input of inputs; track input) {
+  @for (input of inputs; track input) { @if (input.fieldType !== 'slide-toggle')
+  {
   <mat-form-field appearance="outline" class="w-100">
     <mat-label>{{ input?.label }}</mat-label>
 
     <!-- Input Field -->
-    @if (input.type !== 'select' && input.type !== 'slide-toggle') {
+    @if (input.fieldType === 'input') {
     <ng-container>
       <input
         matInput
         [formControlName]="input.controlName"
         [type]="input.type || 'text'"
-        [placeholder]="input?.placeholder"
+        [placeholder]="input.placeholder"
       />
     </ng-container>
-    } @else if (input.type === 'select') {
+
+    } @else if (input.fieldType === 'select') {
     <!-- Select Field -->
     <ng-container>
       <mat-select
@@ -25,28 +27,40 @@
         </mat-option>
       </mat-select>
     </ng-container>
-    } @else if (input.type === 'slide-toggle') {
-    <!-- Mat Slide Toggle -->
-    <ng-container>
-      <mat-slide-toggle
-        [formControlName]="input.controlName"
-        [labelPosition]="input.labelPosition || 'before'"
-        [color]="input.color || 'primary'"
-      >
-        {{ input.label }}
-      </mat-slide-toggle>
-    </ng-container>
     }
 
+    <!-- Validation Error -->
     <mat-error *ngIf="formGroup.get(input.controlName)?.invalid">
       {{ input.errorMessage }}
     </mat-error>
   </mat-form-field>
-
-  <!-- Mat Hint -->
-  <p class="fHint">
-    {{ input.hint }}
+  } @else if (input.fieldType === 'slide-toggle') {
+  <p>
+    {{ input.label }}
   </p>
 
+  <mat-slide-toggle
+    [checked]="toggleValue"
+    [formControlName]="input.controlName"
+    (change)="onToggleChange($event.checked)"
+    [labelPosition]="labelPosition || 'after'"
+    [color]="color || 'primary'"
+  >
+    {{ formGroup.get(input.controlName)?.value ? "true" : "false" }}
+  </mat-slide-toggle>
+
+  <hr />
+  }
+
+  <!-- Hint -->
+  <p
+    class="fHint"
+    *ngIf="input.hint"
+    [style.margin-top]="
+      input.fieldType === 'slide-toggle' ? '10px !important' : ''
+    "
+  >
+    {{ input.hint }}
+  </p>
   }
 </form>

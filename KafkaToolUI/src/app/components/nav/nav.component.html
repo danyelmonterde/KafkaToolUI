@@ -47,6 +47,16 @@
               [matTooltip]="button.tooltip"
               [routerLink]="button.routerLink"
               [disabled]="button.disabled"
+              (click)="onButtonClick(button.label)"
+              [ngStyle]="{
+                color: !button.disabled
+                  ? button.label === 'Verify'
+                    ? 'green'
+                    : button.label === 'Register Connection'
+                    ? 'orange'
+                    : ''
+                  : ''
+              }"
             >
               <mat-icon>{{ button.icon }}</mat-icon>
               {{ button.label }}
