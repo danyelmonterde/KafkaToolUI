@@ -49,7 +49,33 @@ export class AdminComponent {
   formGroup!: FormGroup;
   isFormValid: boolean = false;
 
-  links = [{ label: 'Kafka Clusters', url: '/admin/cluster' }];
+
+  links = [
+    {
+      label: 'Kafka Clusters',
+      url: '/admin/cluster',
+      children: [
+        { label: 'Sub Home 1', url: '/home/sub1' },
+        { label: 'Sub Home 2', url: '/home/sub2' }
+      ]
+    },
+    {
+      label: 'About',
+      url: '/about',
+      children: [
+        { label: 'Sub About 1', url: '/about/sub1' },
+        { label: 'Sub About 2', url: '/about/sub2' }
+      ]
+    },
+    {
+      label: 'Contact',
+      url: '/contact',
+      children: [
+        { label: 'Sub Contact 1', url: '/contact/sub1' },
+        { label: 'Sub Contact 2', url: '/contact/sub2' }
+      ]
+    }
+  ];
 
   private _snackBar = inject(MatSnackBar);
 

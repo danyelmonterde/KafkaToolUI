@@ -24,6 +24,8 @@ export class SidenavComponent {
     children?: { label: string; url: string }[]; // ✅ Add children property
   }[] = [];
 
+ 
+
   toggleDrawer() {
    if(this.drawer){
     this.drawer.toggle();
