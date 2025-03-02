@@ -25,6 +25,10 @@ export class SidenavComponent {
   }[] = [];
 
   toggleDrawer() {
+   if(this.drawer){
     this.drawer.toggle();
+   }else{
+    console.error("Matsidenav is not available");
+   }
   }
 }

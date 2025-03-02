@@ -16,7 +16,7 @@ import { Observable, filter, map, shareReplay } from 'rxjs';
 import { FormDataService } from '../../core/services/form-data.service';
 import { SidenavComponent } from '../../components/sidenav/sidenav.component';
 import { HeaderComponent } from '../../components/header/header.component';
-import { MatSidenav } from '@angular/material/sidenav';
+import { MatDrawer } from '@angular/material/sidenav'; // Update import
 import { ApiService } from '../../core/services/api.service';
 import { CREATE_BTN_CONFIG } from '../../constants/admin-toolbar-header-config';
 
@@ -39,7 +39,8 @@ import { CREATE_BTN_CONFIG } from '../../constants/admin-toolbar-header-config';
   styleUrl: './admin.component.scss',
 })
 export class AdminComponent {
-  @ViewChild('drawer') drawer!: MatSidenav;
+  @ViewChild('drawer') drawer!: SidenavComponent; // Update ViewChild
+  
 
   label!: string;
   currentRoute: string;
@@ -86,10 +87,11 @@ export class AdminComponent {
 
   toggleDrawer() {
     if (this.drawer) {
-      this.drawer.toggle();
+      this.drawer.toggleDrawer();
     } else {
-      console.error('MatSidenav drawer is not available.');
+      console.error('MatDrawer is not available.');
     }
+
   }
 
   onButtonClick(label: string) {
